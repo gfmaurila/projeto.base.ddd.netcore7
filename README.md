@@ -16,6 +16,17 @@
 
 - No geral, o projeto base é uma excelente referência para iniciar o desenvolvimento de sistemas utilizando o DDD e o .NET Core 7, além de fornecer um ambiente de desenvolvimento facilitado pelo Docker Compose com várias opções de banco de dados e sistemas de mensageria.
 
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/241fb1b1-3d86-4bf1-b531-a2c5a502a366)
+
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/27b06b21-e96f-4c61-92b2-dcbd96225b44)
+
+
+
+
+
+
 ## Autor
 
 - Guilherme Figueiras Maurila
