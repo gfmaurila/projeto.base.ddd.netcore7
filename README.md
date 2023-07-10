@@ -1,6 +1,6 @@
-Este projeto, disponível no GitHub (https://github.com/gfmaurila/projeto.base.ddd.netcore7), foi desenvolvido com base nos princípios do Domain-Driven Design (DDD) e utiliza a versão 7 do framework .NET Core.
+## Este projeto, disponível no GitHub (https://github.com/gfmaurila/projeto.base.ddd.netcore7), foi desenvolvido com base nos princípios do Domain-Driven Design (DDD) e utiliza a versão 7 do framework .NET Core.
 
-A estrutura básica do projeto segue a arquitetura DDD, fornecendo uma organização clara e modular. O objetivo é facilitar o desenvolvimento de sistemas complexos, separando as responsabilidades em diferentes camadas.
+## A estrutura básica do projeto segue a arquitetura DDD, fornecendo uma organização clara e modular. O objetivo é facilitar o desenvolvimento de sistemas complexos, separando as responsabilidades em diferentes camadas.
 
 Além disso, o projeto também inclui um Docker Compose com uma seleção de imagens para auxiliar na implementação gradual do ambiente de desenvolvimento. As seguintes imagens estão disponíveis:
 
