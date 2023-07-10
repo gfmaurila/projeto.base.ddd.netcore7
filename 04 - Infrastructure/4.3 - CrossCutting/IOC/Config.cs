@@ -20,7 +20,6 @@ public class Config
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IUserRepository, UserEFRepository>();
-        //services.AddScoped<IUserRepository, UserDapperRepository>();
     }
 
     public static void ConfigService(IServiceCollection services)
@@ -30,10 +29,5 @@ public class Config
 
     public static void ConfigBusService(IServiceCollection services)
     {
-        //services.AddScoped<IMessageBusService, MessageBusService>();
-        //services.AddScoped<ISendGridProducer, SendGridProducer>();
-        //services.AddScoped<ITwilioWhatsAppProducer, TwilioWhatsAppProducer>();
-        //services.AddHostedService<SendGridGenerateCodeResetConsumer>();
-        //services.AddHostedService<TwilioGenerateCodeResetConsumer>();
     }
 }
