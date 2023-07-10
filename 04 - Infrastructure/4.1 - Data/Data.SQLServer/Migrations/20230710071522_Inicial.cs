@@ -30,6 +30,32 @@ namespace Data.SQLServer.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                 });
+
+            migrationBuilder.Sql(@"
+                                    CREATE PROCEDURE GenerateUserInserts
+                                    AS
+                                    BEGIN
+                                        DECLARE @i INT = 1;
+                                        WHILE (@i <= 15000)
+                                        BEGIN
+                                            DECLARE @FullName NVARCHAR(MAX) = 'User' + CAST(@i AS NVARCHAR);
+                                            DECLARE @Email NVARCHAR(MAX) = 'user' + CAST(@i AS NVARCHAR) + '@example.com';
+                                            DECLARE @Phone NVARCHAR(MAX) = '123-456-789' + RIGHT('000' + CAST(@i AS NVARCHAR), 3);
+                                            DECLARE @BirthDate DATETIME2 = DATEADD(YEAR, -20, GETDATE());
+                                            DECLARE @Active BIT = 1;
+                                            DECLARE @Password NVARCHAR(MAX) = 'Password' + CAST(@i AS NVARCHAR);
+                                            DECLARE @Role NVARCHAR(MAX) = 'Role' + CAST((@i % 5) AS NVARCHAR);
+                                            DECLARE @Modified DATETIME2 = GETDATE();
+
+                                            INSERT INTO [dbo].[User] ([FullName], [Email], [Phone], [BirthDate], [Active], [Password], [Role], [Modified])
+                                            VALUES (@FullName, @Email, @Phone, @BirthDate, @Active, @Password, @Role, @Modified);
+
+                                            SET @i = @i + 1;
+                                        END
+                                    END
+                                    GO ");
+
+            migrationBuilder.Sql(@"EXEC GenerateUserInserts");
         }
 
         /// <inheritdoc />
