@@ -1,6 +1,8 @@
 ﻿using Application.DTOs;
 using Domain.Contract.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers;
 
@@ -12,39 +14,89 @@ namespace WebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
-    public UserController(IUserService service) => _service = service;
+    public UserController(IUserService service) 
+        => _service = service;
 
     /// <summary>
-    /// Retorna todos os usuários.
+    /// Obtém uma lista com todos os usuários.
     /// </summary>
-    [HttpGet()]
-    public async Task<IActionResult> Get() => Ok(await _service.Get());
+    /// <response code="200">Retorna a lista de usuários.</response>
+    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+    [HttpGet]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Get() 
+        => Ok(await _service.Get());
 
     /// <summary>
-    /// Retorna um usuário específico por ID.
+    /// Obtém o usuários pelo Id.
     /// </summary>
-    /// <param name="id">O ID do usuário.</param>
+    /// <param name="id"></param>
+    /// <response code="200">Retorna o usuários.</response>
+    /// <response code="400">Retorna lista de erros, se a requisição for inválida.</response>
+    /// <response code="404">Quando nenhum usuários é encontrado pelo Id fornecido.</response>
+    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get([FromRoute] int id) => Ok(await _service.Get(id));
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Get([FromRoute] int id) 
+        => Ok(await _service.Get(id));
 
     /// <summary>
-    /// Cria um novo usuário.
+    /// Cadastra um novo usuário.
     /// </summary>
-    /// <param name="request">O objeto DTO contendo as informações do usuário.</param>
-    [HttpPost()]
-    public async Task<IActionResult> Create([FromBody] UserDto request) => Ok(await _service.Create(request));
+    /// <param name="request"></param>
+    /// <response code="200">Retorna o Id do novo usuário.</response>
+    /// <response code="400">Retorna lista de erros, se a requisição for inválida.</response>
+    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+    [HttpPost]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Create([FromBody] UserDto request) 
+        => Ok(await _service.Create(request));
 
     /// <summary>
-    /// Atualiza as informações de um usuário.
+    /// Atualiza um cliente existente.
     /// </summary>
-    /// <param name="request">O objeto DTO contendo as novas informações do usuário.</param>
-    [HttpPut()]
-    public async Task<IActionResult> Update([FromBody] UserDto request) => Ok(await _service.Update(request));
+    /// <param name="request"></param>
+    /// <response code="200">Retorna a resposta com a mensagem de sucesso.</response>
+    /// <response code="400">Retorna lista de erros, se a requisição for inválida.</response>
+    /// <response code="404">Quando nenhum cliente é encontrado pelo Id fornecido.</response>
+    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
+    [HttpPut]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Update([FromBody] UserDto request) 
+        => Ok(await _service.Update(request));
 
     /// <summary>
-    /// Remove um usuário específico.
+    /// Deleta o usuário pelo Id.
     /// </summary>
-    /// <param name="id">O ID do usuário.</param>
+    /// <param name="id"></param>
+    /// <response code="200">Retorna a resposta com a mensagem de sucesso.</response>
+    /// <response code="400">Retorna lista de erros, se a requisição for inválida.</response>
+    /// <response code="404">Quando nenhum usuário é encontrado pelo Id fornecido.</response>
+    /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Remove([FromRoute] int id) => Ok(await _service.Remove(id));
+    [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Remove([FromRoute] int id) 
+        => Ok(await _service.Remove(id));
 }
