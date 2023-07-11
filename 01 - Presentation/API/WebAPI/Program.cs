@@ -1,7 +1,6 @@
 using AutoMapper;
 using IOC;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
+using WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,29 +20,8 @@ builder.Services.AddSingleton(
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Projeto DDD .NET Core 7",
-        Version = "v1",
-        Description = "Projeto DDD .NET Core 7",
-        Contact = new OpenApiContact
-        {
-            Name = "Guilherme F Maurila",
-            Email = "gfmaurila@gmail.com",
-            Url = new Uri("https://github.com/gfmaurila"),
-        }
-    });
-
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-});
+builder.Services.AddSwaggerConfiguration(builder.Configuration);
 
 
 var app = builder.Build();
