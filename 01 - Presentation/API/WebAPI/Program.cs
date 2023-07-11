@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 Config.ConfigDbContext(builder.Services, builder.Configuration);
 Config.ConfigRepository(builder.Services);
 Config.ConfigService(builder.Services);
+Config.ConfigValidator(builder.Services);
 
 builder.Services.AddHttpClient();
 Config.ConfigBusService(builder.Services);
@@ -27,24 +28,16 @@ builder.Services.AddSwaggerConfiguration(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-
-app.UseSwagger();
-
-app.UseSwaggerUI(c =>
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker") || app.Environment.IsStaging())
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto DDD .NET Core 7");
-    c.RoutePrefix = string.Empty;
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.Run();

@@ -2,7 +2,7 @@
 using System.Reflection;
 
 namespace WebAPI.Configuration;
-public static class SwaggerConfig
+public static class ServicesCollectionExtensions
 {
     public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services, IConfiguration configuration)
     {

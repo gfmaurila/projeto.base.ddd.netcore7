@@ -23,6 +23,16 @@
 ![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/27b06b21-e96f-4c61-92b2-dcbd96225b44)
 
 
+# Projeto 
+- http://localhost:5072/index.html
+- http://localhost:5072/swagger/index.html
+
+# KafKa
+- http://localhost:9000
+
+# RabbitMQ
+- http://localhost:15672
+
 
 
 

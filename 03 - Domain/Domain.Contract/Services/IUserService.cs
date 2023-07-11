@@ -1,12 +1,14 @@
 ﻿using Application.DTOs;
+using Application.Responses;
+using Ardalis.Result;
 
 namespace Domain.Contract.Services;
 
 public interface IUserService
 {
-    Task<UserDto> Create(UserDto dto);
-    Task<UserDto> Update(UserDto dto);
-    Task<bool> Remove(int id);
-    Task<UserDto> Get(int id);
-    Task<List<UserDto>> Get();
+    Task<Result<CreatedUserResponse>> Create(UserDto dto);
+    Task<Result> Update(UserDto dto);
+    Task<Result> Remove(int id);
+    Task<Result<UserDto>> Get(int id);
+    Task<Result<List<UserDto>>> Get();
 }

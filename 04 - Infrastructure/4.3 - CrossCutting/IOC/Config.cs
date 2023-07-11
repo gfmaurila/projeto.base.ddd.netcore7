@@ -1,4 +1,5 @@
 ﻿using Application.Services;
+using Application.Validators;
 using Data.Repository.Repositories;
 using Data.Repository.Repositories.EF;
 using Data.SQLServer.Config;
@@ -25,6 +26,11 @@ public class Config
     public static void ConfigService(IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+    }
+
+    public static void ConfigValidator(IServiceCollection services)
+    {
+        services.AddScoped<CreateUserValidator>();
     }
 
     public static void ConfigBusService(IServiceCollection services)

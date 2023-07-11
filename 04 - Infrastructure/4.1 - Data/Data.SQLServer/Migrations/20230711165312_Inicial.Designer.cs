@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.SQLServer.Migrations
 {
     [DbContext(typeof(SQLServerContext))]
-    [Migration("20230710071522_Inicial")]
+    [Migration("20230711165312_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -37,13 +37,13 @@ namespace Data.SQLServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("DATE");
 
                     b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -60,6 +60,35 @@ namespace Data.SQLServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Domain.Core.Entities.User", b =>
+                {
+                    b.OwnsOne("Domain.Core.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Address")
+                                .IsRequired()
+                                .HasMaxLength(254)
+                                .IsUnicode(false)
+                                .HasColumnType("varchar(254)")
+                                .HasColumnName("Email");
+
+                            b1.HasKey("UserId");
+
+                            b1.HasIndex("Address")
+                                .IsUnique()
+                                .HasFilter("[Email] IS NOT NULL");
+
+                            b1.ToTable("User");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Email");
                 });
 #pragma warning restore 612, 618
         }

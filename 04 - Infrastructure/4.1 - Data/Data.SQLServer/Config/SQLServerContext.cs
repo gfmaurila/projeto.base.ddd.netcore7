@@ -17,14 +17,4 @@ public class SQLServerContext : DbContext
     {
         builder.ApplyConfiguration(new UserConfigurations());
     }
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseLoggerFactory(_loggerFactory);
-    //    base.OnConfiguring(optionsBuilder);
-    //}
-
-    //public static readonly Microsoft.Extensions.Logging.LoggerFactory _loggerFactory = new LoggerFactory(new[] {
-    //    new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider()
-    //});
 }

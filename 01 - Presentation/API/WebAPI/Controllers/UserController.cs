@@ -1,7 +1,9 @@
 ﻿using Application.DTOs;
+using Application.Responses;
 using Domain.Contract.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using WebAPI.Configuration;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers;
@@ -14,7 +16,7 @@ namespace WebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
-    public UserController(IUserService service) 
+    public UserController(IUserService service)
         => _service = service;
 
     /// <summary>
@@ -25,10 +27,10 @@ public class UserController : ControllerBase
     [HttpGet]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<List<UserDto>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Get() 
-        => Ok(await _service.Get());
+    public async Task<IActionResult> Get()
+        => (await _service.Get()).ToActionResult();
 
     /// <summary>
     /// Obtém o usuários pelo Id.
@@ -45,8 +47,8 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Get([FromRoute] int id) 
-        => Ok(await _service.Get(id));
+    public async Task<IActionResult> Get([FromRoute] int id)
+        => (await _service.Get(id)).ToActionResult();
 
     /// <summary>
     /// Cadastra um novo usuário.
@@ -58,19 +60,20 @@ public class UserController : ControllerBase
     [HttpPost]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<CreatedUserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Create([FromBody] UserDto request) 
-        => Ok(await _service.Create(request));
+    public async Task<IActionResult> Create([FromBody] UserDto request)
+        => (await _service.Create(request)).ToActionResult();
+
 
     /// <summary>
-    /// Atualiza um cliente existente.
+    /// Atualiza um usuário existente.
     /// </summary>
     /// <param name="request"></param>
     /// <response code="200">Retorna a resposta com a mensagem de sucesso.</response>
     /// <response code="400">Retorna lista de erros, se a requisição for inválida.</response>
-    /// <response code="404">Quando nenhum cliente é encontrado pelo Id fornecido.</response>
+    /// <response code="404">Quando nenhum usuário é encontrado pelo Id fornecido.</response>
     /// <response code="500">Quando ocorre um erro interno inesperado no servidor.</response>
     [HttpPut]
     [Consumes(MediaTypeNames.Application.Json)]
@@ -79,7 +82,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Update([FromBody] UserDto request) 
+    public async Task<IActionResult> Update([FromBody] UserDto request)
         => Ok(await _service.Update(request));
 
     /// <summary>
@@ -97,6 +100,6 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Remove([FromRoute] int id) 
-        => Ok(await _service.Remove(id));
+    public async Task<IActionResult> Remove([FromRoute] int id)
+        => (await _service.Remove(id)).ToActionResult();
 }

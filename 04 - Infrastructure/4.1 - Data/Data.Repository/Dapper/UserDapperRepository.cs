@@ -1,10 +1,21 @@
 ﻿using Domain.Contract.Repositories;
 using Domain.Core.Entities;
+using Domain.Core.ValueObjects;
 
 namespace Data.Repository.Repositories.Dapper;
 public class UserDapperRepository : IUserRepository
 {
     public Task<User> Create(User obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ExistsByEmailAsync(Email email)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ExistsByEmailAsync(Email email, int id)
     {
         throw new NotImplementedException();
     }
