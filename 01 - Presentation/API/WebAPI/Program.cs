@@ -24,7 +24,7 @@ builder.Services.AddSingleton(
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration(builder.Configuration);
-// builder.Services.AddHealthChecks(builder.Configuration);
+builder.Services.AddHealthChecks(builder.Configuration);
 
 
 var app = builder.Build();
@@ -43,16 +43,16 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker") |
 }
 
 // Gera o endpoint que retornará os dados utilizados no dashboard
-//app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
-//{
-//    Predicate = _ => true,
-//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-//});
+app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+{
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 // Ativa o dashboard para a visualização da situação de cada Health Check
-//app.UseHealthChecksUI(options =>
-//{
-//    options.UIPath = "/monitor";
-//});
+app.UseHealthChecksUI(options =>
+{
+    options.UIPath = "/monitor";
+});
 
 app.Run();
