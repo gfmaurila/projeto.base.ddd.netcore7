@@ -46,6 +46,39 @@
 
 # Docker 
 - http://localhost:5072/monitor#/healthchecks
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/5c417116-dcc3-40f1-820f-3e27ae488c6d)
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/3ee69336-c2e7-40d9-99e1-25f63e3e80a1)
+
+# Swagger Doc
+- GET
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/85a0c388-16ed-4d3b-8575-f9db4e50a7e9)
+
+- GET BY ID
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/540bf0c8-07a1-419d-b5b2-8f20d98958ce)
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/cd2df303-be0b-4ff0-b3b2-7c2f7d240234)
+
+- POST - Create
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/1c1f73b3-a52d-4348-b2ab-80d50f32799a)
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/77bd4e62-84d1-44fd-9a1b-eb23cd03db78)
+
+- PUT - Update
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/6707a6b0-e917-4ce8-919d-8300fd0e0e08)
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/9e841fc7-3308-4dea-8e56-1403fe047fd4)
+
+- DELETE
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/bd67931a-c707-4fce-8647-be11b9c59beb)
+
+![image](https://github.com/gfmaurila/projeto.base.ddd.netcore7/assets/5544035/8a4aabe0-8e13-40e8-ae54-ba86f9ea04b7)
+
 
 ## Autor
 
