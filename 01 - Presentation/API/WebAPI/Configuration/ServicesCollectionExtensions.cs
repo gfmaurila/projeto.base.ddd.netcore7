@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace WebAPI.Configuration;
@@ -25,6 +26,66 @@ public static class ServicesCollectionExtensions
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             c.IncludeXmlComments(xmlPath);
         });
+
+        return services;
+    }
+
+    public static IServiceCollection AddHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        var mongoConnection = configuration.GetSection("ConnectionStrings:MongoDB").Value;
+        var sqlserverConnection = configuration.GetSection("ConnectionStrings:SqlConnection").Value;
+        var postgreSqlConnection = configuration.GetSection("ConnectionStrings:PostgreSql").Value;
+        var redisConnection = configuration.GetSection("ConnectionStrings:Redis").Value;
+        var kafkaConnection = configuration.GetSection("ConnectionStrings:Kafka").Value;
+
+        var rabbitMqConnection = configuration.GetSection("ConnectionStrings:RabbitMQ:Host").Value.Replace("rabbitmq", "amqp").Replace("//", $"//{configuration.GetSection("ConnectionStrings:RabbitMQ:Username").Value}:{configuration.GetSection("ConnectionStrings:RabbitMQ:Password").Value}@");
+
+        // Cerviços através de Health Checks
+        services.AddHealthChecks()
+
+            // RabbitMQ
+            .AddRabbitMQ(rabbitConnectionString: rabbitMqConnection,
+                        name: "rabbitmq",
+                        failureStatus: HealthStatus.Unhealthy,
+                        tags: new string[] { "rabbitmq", "WebAPI" })
+
+            // Kafka
+            .Add(new HealthCheckRegistration(
+                name: "Kafka",
+                factory: _ => new KafkaHealthCheck(kafkaConnection),
+                failureStatus: HealthStatus.Unhealthy,
+                tags: new[] { "kafka", "WebAPI" }
+            ))
+
+            // SqlServer
+            .AddSqlServer(connectionString: sqlserverConnection,
+                      healthQuery: "SELECT 1;",
+                      name: "sqlserver",
+                      failureStatus: HealthStatus.Unhealthy,
+                      tags: new string[] { "db", "sqlserver", "WebAPI" })
+
+            // MongoDb
+            .AddMongoDb(mongodbConnectionString: mongoConnection,
+                        name: "mongoserver",
+                        timeout: new System.TimeSpan(0, 0, 0, 5),
+                        failureStatus: HealthStatus.Unhealthy,
+                        tags: new string[] { "db", "MongoDb", "mongoserver", "WebAPI" })
+
+            // NpgSql
+            .AddNpgSql(npgsqlConnectionString: postgreSqlConnection,
+                        name: "postgres",
+                        timeout: new System.TimeSpan(0, 0, 0, 5),
+                        failureStatus: HealthStatus.Unhealthy,
+                        tags: new string[] { "db", "NpgSql", "WebAPI" })
+
+            // Redis
+            .AddRedis(redisConnectionString: redisConnection,
+                        name: "redis",
+                        tags: new string[] { "redis", "cache", "WebAPI" },
+                        timeout: new System.TimeSpan(0, 0, 0, 5),
+                        failureStatus: HealthStatus.Unhealthy);
+
+        services.AddHealthChecksUI().AddInMemoryStorage();
 
         return services;
     }

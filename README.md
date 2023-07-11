@@ -27,6 +27,9 @@
 - http://localhost:5072/index.html
 - http://localhost:5072/swagger/index.html
 
+# Docker
+- http://localhost:5072/swagger/index.html
+
 # KafKa
 - http://localhost:9000
 
@@ -37,8 +40,12 @@
 - Server=sqlserver;Integrated Security=true;Initial Catalog=CrudDDDDotNetNet7;User Id=sa;Password=@C23l10a1985;Trusted_Connection=false;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True;
 
 
+# Health Checks
+- https://localhost:7102/monitor#/healthchecks
+- https://libraries.io/nuget/AspNetCore.HealthChecks.Rabbitmq
 
-
+# Docker 
+- http://localhost:5072/monitor#/healthchecks
 
 ## Autor
 

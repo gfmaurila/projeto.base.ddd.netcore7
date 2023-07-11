@@ -1,5 +1,7 @@
 using AutoMapper;
+using HealthChecks.UI.Client;
 using IOC;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,15 +16,15 @@ builder.Services.AddHttpClient();
 Config.ConfigBusService(builder.Services);
 
 builder.Services.AddSingleton(
-    new MapperConfiguration(cfg =>
-    {
-        cfg.AddProfile(new MappingProfile());
-    }).CreateMapper());
-
+        new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile(new MappingProfile());
+        }).CreateMapper());
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration(builder.Configuration);
+// builder.Services.AddHealthChecks(builder.Configuration);
 
 
 var app = builder.Build();
@@ -39,5 +41,18 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker") |
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Gera o endpoint que retornará os dados utilizados no dashboard
+//app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+//{
+//    Predicate = _ => true,
+//    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+//});
+
+// Ativa o dashboard para a visualização da situação de cada Health Check
+//app.UseHealthChecksUI(options =>
+//{
+//    options.UIPath = "/monitor";
+//});
 
 app.Run();
