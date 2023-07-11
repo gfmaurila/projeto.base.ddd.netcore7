@@ -33,6 +33,9 @@
 # RabbitMQ
 - http://localhost:15672
 
+# SQLServer
+- Server=sqlserver;Integrated Security=true;Initial Catalog=CrudDDDDotNetNet7;User Id=sa;Password=@C23l10a1985;Trusted_Connection=false;MultipleActiveResultSets=true;Encrypt=True;TrustServerCertificate=True;
+
 
 
 
