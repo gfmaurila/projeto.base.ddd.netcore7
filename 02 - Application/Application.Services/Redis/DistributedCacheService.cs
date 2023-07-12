@@ -1,5 +1,7 @@
-﻿using Domain.Contract.Redis;
+﻿using Application.DTOs;
+using Domain.Contract.Redis;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace Application.Services.Redis;
@@ -22,22 +24,23 @@ public class DistributedCacheService : ICacheService
         await _database.KeyDeleteAsync(key);
     }
 
-
-    public async Task SetAsyncAll(string key, string jsonData, TimeSpan tempo)
+    public async Task SetAsyncAll(CacheDto dto)
     {
-        _logger.LogInformation("----- Added to DistributedCache: '{key}'", key);
-        await _database.StringSetAsync(key, jsonData, tempo);
-    }
-
-    public async Task SetAsyncAll(string key, string jsonData)
-    {
-        _logger.LogInformation("----- Added to DistributedCache: '{key}'", key);
-        await _database.StringSetAsync(key, jsonData);
+        if (dto.Tempo == 0)
+        {
+            _logger.LogInformation($"----- Added to DistributedCache: '{dto.Key}'", dto.Key);
+            await _database.StringSetAsync(dto.Key, JsonConvert.SerializeObject(dto.JsonData));
+        }
+        else
+        {
+            _logger.LogInformation($"----- Added to DistributedCache: '{dto.Key}'", dto.Key);
+            await _database.StringSetAsync(dto.Key, dto.JsonData, TimeSpan.FromDays(dto.Tempo));
+        }
     }
 
     public async Task<string> StringGetAsync(string key)
     {
-        _logger.LogInformation("----- GetAll to DistributedCache: '{key}'", key);
+        _logger.LogInformation($"----- GetAll to DistributedCache: '{key}'", key);
         return await _database.StringGetAsync(key);
     }
 
