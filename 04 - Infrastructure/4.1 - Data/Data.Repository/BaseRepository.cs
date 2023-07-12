@@ -17,7 +17,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         obj.Modified = DateTime.Now;
         _context.Add(obj);
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
 
         return obj;
     }
@@ -26,7 +26,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         obj.Modified = DateTime.Now;
         _context.Entry(obj).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        //await _context.SaveChangesAsync();
 
         return obj;
     }
@@ -38,7 +38,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         if (obj != null)
         {
             _context.Remove(obj);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
             return true;
         }
         return false;

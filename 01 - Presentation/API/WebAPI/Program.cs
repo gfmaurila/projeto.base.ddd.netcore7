@@ -1,3 +1,4 @@
+using Application.Services.Middleware;
 using AutoMapper;
 using HealthChecks.UI.Client;
 using IOC;
@@ -8,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 Config.ConfigDbContext(builder.Services, builder.Configuration);
+Config.ConfigMongoDb(builder.Services, builder.Configuration);
 Config.ConfigRepository(builder.Services);
 Config.ConfigService(builder.Services);
 Config.ConfigValidator(builder.Services);
+LogInitializer.Initialize(builder.Configuration);
 
 builder.Services.AddHttpClient();
 Config.ConfigBusService(builder.Services);
@@ -33,6 +36,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorLoggingMiddleware>();
 
 app.MapControllers();
 

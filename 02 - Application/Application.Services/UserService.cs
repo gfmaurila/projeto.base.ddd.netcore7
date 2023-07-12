@@ -15,12 +15,14 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly IUserRepository _repo;
     private readonly CreateUserValidator _validator;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UserService(CreateUserValidator validator, IMapper mapper, IUserRepository repo)
+    public UserService(CreateUserValidator validator, IMapper mapper, IUserRepository repo, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _repo = repo;
         _validator = validator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<UserDto>> Get(int id)
@@ -47,6 +49,7 @@ public class UserService : IUserService
             return Result.Error("O endereço de e-mail informado já está sendo utilizado.");
 
         var entityCreated = await _repo.Create(_mapper.Map<User>(dto));
+        await _unitOfWork.SaveChangesAsync();
         return Result.Success(new CreatedUserResponse(entityCreated.Id), "Cadastrado com sucesso!");
     }
 
@@ -64,7 +67,7 @@ public class UserService : IUserService
             return Result.Error("O endereço de e-mail informado já está sendo utilizado.");
 
         await _repo.Update(_mapper.Map<User>(dto));
-
+        await _unitOfWork.SaveChangesAsync();
         return Result.SuccessWithMessage("Atualizado com sucesso!");
     }
 
@@ -76,6 +79,7 @@ public class UserService : IUserService
             return Result.NotFound($"Nenhum registro encontrado pelo Id: {id}");
 
         await _repo.Remove(id);
+        await _unitOfWork.SaveChangesAsync();
         return Result.SuccessWithMessage("Removido com sucesso!");
     }
 }
