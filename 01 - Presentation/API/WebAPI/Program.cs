@@ -3,6 +3,7 @@ using AutoMapper;
 using HealthChecks.UI.Client;
 using IOC;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Serilog;
 using WebAPI.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 Config.ConfigDbContext(builder.Services, builder.Configuration);
 Config.ConfigMongoDb(builder.Services, builder.Configuration);
+Config.ConfigRedis(builder.Services, builder.Configuration);
 Config.ConfigRepository(builder.Services);
 Config.ConfigService(builder.Services);
 Config.ConfigValidator(builder.Services);
-LogInitializer.Initialize(builder.Configuration);
+//LogInitializer.Initialize(builder.Configuration);
+builder.Host.UseSerilog((context, config) =>
+{
+    config.ReadFrom.Configuration(builder.Configuration);
+});
 
 builder.Services.AddHttpClient();
 Config.ConfigBusService(builder.Services);

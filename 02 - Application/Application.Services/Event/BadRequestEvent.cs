@@ -17,7 +17,7 @@ public class BadRequestEvent : IErrorEvent
 
     public void HandleEvent(HttpContext context, ILogger logger)
     {
-        logger.LogInformation("Bad request event occurred: {DomainEvent}", context.Response.StatusCode);
+        logger.LogInformation($"Bad request event occurred: {context.Response.StatusCode}", context.Response.StatusCode);
 
         var logEntry = new LogEntry
         {

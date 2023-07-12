@@ -18,7 +18,7 @@ public class InternalServerErrorEvent : IErrorEvent
 
     public void HandleEvent(HttpContext context, ILogger logger)
     {
-        logger.LogInformation("Internal server error event occurred: {DomainEvent}", context.Response.StatusCode);
+        logger.LogInformation($"Internal server error event occurred: {context.Response.StatusCode}", context.Response.StatusCode);
 
         var logEntry = new LogEntry
         {

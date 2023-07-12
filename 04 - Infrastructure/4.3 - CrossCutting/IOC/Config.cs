@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Application.Services.Event;
+using Application.Services.Redis;
 using Application.Validators;
 using Data.Repository;
 using Data.Repository.MongoDb;
@@ -7,6 +8,7 @@ using Data.Repository.Repositories;
 using Data.Repository.Repositories.EF;
 using Data.SQLServer.Config;
 using Domain.Contract.MongoDb;
+using Domain.Contract.Redis;
 using Domain.Contract.Repositories;
 using Domain.Contract.Services;
 using Domain.Contract.Services.Event;
@@ -14,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using StackExchange.Redis;
 
 namespace IOC;
 public class Config
@@ -26,6 +29,26 @@ public class Config
     public static void ConfigMongoDb(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IMongoClient>(new MongoClient(configuration.GetConnectionString("MongoDB")));
+    }
+
+    public static void ConfigRedis(IServiceCollection services, IConfiguration configuration)
+    {
+        // Register the ConnectionMultiplexer to use a single, shared connection to Redis.
+        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")));
+
+        // Then register IDatabase as a factory using the ConnectionMultiplexer.
+        services.AddScoped<IDatabase>(x =>
+        {
+            var multiplexer = x.GetRequiredService<IConnectionMultiplexer>();
+            return multiplexer.GetDatabase();
+        });
+
+        // Register your service that uses IDatabase
+        services.AddScoped<ICacheService, DistributedCacheService>();
+
+
+        //services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")));
+        //services.AddScoped<ICacheService, DistributedCacheService>();
     }
 
     public static void ConfigRepository(IServiceCollection services)

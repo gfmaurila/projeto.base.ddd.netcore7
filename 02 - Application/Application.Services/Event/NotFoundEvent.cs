@@ -18,7 +18,7 @@ public class NotFoundEvent : IErrorEvent
 
     public void HandleEvent(HttpContext context, ILogger logger)
     {
-        logger.LogInformation("Not found event occurred: {DomainEvent}", context.Response.StatusCode);
+        logger.LogInformation($"Not found event occurred: {context.Response.StatusCode}", context.Response.StatusCode);
         var logEntry = new LogEntry
         {
             StatusCode = context.Response.StatusCode,
